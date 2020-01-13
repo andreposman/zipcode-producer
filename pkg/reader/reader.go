@@ -4,25 +4,41 @@ import (
 	"bufio"
 	"encoding/csv"
 	"fmt"
+	"log"
 	"os"
 )
 
 // OpenFile as the name suggets, open and returns an csv file.
-func OpenFile() *os.File {
+func openFile() *os.File {
+	file := "../data/zipcodes.csv"
 
-	csvData, err := os.Open("../../data/zipcodes.csv")
+	csvData, err := os.Open(file)
+	if err != nil {
+		log.Fatalln(" - ❌ Error:", err)
+	}
+	// defer csvData.Close()
+
+	return csvData
+}
+
+// ReadFile reads the csv file and returns an array of strings
+func ReadFile() []string {
+
+	// ZipCodes := new(models.ZipCode)
+	// var ZipCode = &ZipCodes
+	var ZipCode []string
+	csvData := openFile()
+	reader := csv.NewReader(bufio.NewReader(csvData))
+
+	lines, err := reader.Read()
 
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	return csvData
-}
+	for _, line := range lines {
+		ZipCode = append(ZipCode, line)
+	}
 
-func ReadFile() []string {
-
-	csvData := OpenFile()
-	reader := csv.NewReader(bufio.NewReader(csvData))
-
-	ZipCode := new ZipCode
+	return ZipCode
 }
