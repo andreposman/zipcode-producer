@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"log"
 
-	errorhandler "github.com/andreposman/zipcode-producer/pkg/errorHandler"
+	"github.com/andreposman/zipcode-producer/pkg/handler"
 	"github.com/streadway/amqp"
 )
 
@@ -14,11 +14,11 @@ func SendMessage(zipCodes []string) {
 	connString := "amqp://guest:guest@localhost:5672/"
 
 	conn, err := amqp.Dial(connString)
-	errorhandler.FailOnError(err, "Failed to connect do RabbitMQ")
+	handler.FailOnError(err, "Failed to connect do RabbitMQ")
 	defer conn.Close()
 
 	channel, err := conn.Channel()
-	errorhandler.FailOnError(err, "Failed to open a channel")
+	handler.FailOnError(err, "Failed to open a channel")
 	defer channel.Close()
 
 	queue, err := channel.QueueDeclare(
@@ -29,7 +29,7 @@ func SendMessage(zipCodes []string) {
 		false,      // no-wait
 		nil,        // arguments
 	)
-	errorhandler.FailOnError(err, "Faile do declare a queue")
+	handler.FailOnError(err, "Faile do declare a queue")
 
 	message, _ := json.Marshal(zipCodes)
 
@@ -43,5 +43,5 @@ func SendMessage(zipCodes []string) {
 			Body:        []byte(message),
 		})
 	log.Printf(" [x] Sent: %s", message)
-	errorhandler.FailOnError(err, "Failed to publish a message")
+	handler.FailOnError(err, "Failed to publish a message")
 }
