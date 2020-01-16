@@ -3,9 +3,10 @@ package rabbitmq
 import (
 	"log"
 
-	"github.com/andreposman/zipcode-producer/pkg/tools/handler"
-	"github.com/streadway/amqp"
+	database "github.com/andreposman/zipcode-producer/database"
+	tools "github.com/andreposman/zipcode-producer/pkg/tools/handler"
 
+	"github.com/streadway/amqp"
 )
 
 // ReceiveMessage from a rabbitmq queue

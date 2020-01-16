@@ -1,0 +1,6 @@
+mongo:
+  database: mongo
+  user: andreposman
+  password: andrep15
+  port: 63808
+  collection: pickups
