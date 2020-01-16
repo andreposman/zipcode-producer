@@ -1,4 +1,4 @@
-package reader
+package controllers
 
 import (
 	"bufio"
@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"log"
 	"os"
+
+	"github.com/andreposman/zipcode-producer/pkg/services/rabbitmq"
 )
 
 // OpenFile as the name suggets, open and returns an csv file.
@@ -16,7 +18,6 @@ func openFile() *os.File {
 	if err != nil {
 		log.Fatalln(" - ❌ Error:", err)
 	}
-	// defer csvData.Close()
 
 	return csvData
 }
@@ -24,9 +25,7 @@ func openFile() *os.File {
 // ReadFile reads the csv file and returns an array of strings
 func ReadFile() []string {
 
-	// ZipCodes := new(models.ZipCode)
-	// var ZipCode = &ZipCodes
-	var ZipCode []string
+	var ZipCodes []string
 	csvData := openFile()
 	reader := csv.NewReader(bufio.NewReader(csvData))
 
@@ -37,8 +36,14 @@ func ReadFile() []string {
 	}
 
 	for _, line := range lines {
-		ZipCode = append(ZipCode, line)
+		ZipCodes = append(ZipCodes, line)
 	}
 
-	return ZipCode
+	return ZipCodes
+}
+
+// ProduceMessage receives an array of strings and publish on a rabbitmq queue
+func ProduceMessage() {
+	zipcodes := ReadFile()
+	rabbitmq.PublishMessage(zipcodes)
 }

@@ -1,13 +1,14 @@
 package main
 
 import (
-	"github.com/andreposman/zipcode-producer/pkg/amqp"
-	"github.com/andreposman/zipcode-producer/pkg/reader"
+	"github.com/andreposman/zipcode-producer/pkg/controllers"
+	"github.com/andreposman/zipcode-producer/pkg/services/rabbitmq"
 )
 
 func main() {
 
-	zipCodes := reader.ReadFile()
-	amqp.SendMessage(zipCodes)
+	zipCodes := controllers.ReadFile()
+	rabbitmq.ReceiveMessage()
+	// rabbitmq.SendMessage(zipCodes)
 
 }

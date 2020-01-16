@@ -1,4 +1,4 @@
-package amqp
+package rabbitmq
 
 import (
 	"encoding/json"
@@ -8,8 +8,8 @@ import (
 	"github.com/streadway/amqp"
 )
 
-// SendMessage sends the message to a queue
-func SendMessage(zipCodes []string) {
+// PublishMessage sends the message to a queue
+func PublishMessage(zipCodes []string) {
 
 	connString := "amqp://guest:guest@localhost:5672/"
 
