@@ -39,6 +39,7 @@ func FromYAML(file string) *Settings {
 		fmt.Println(err)
 	}
 
+	fmt.Print(settings)
 	return settings
 }
 
