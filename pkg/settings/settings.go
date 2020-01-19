@@ -38,31 +38,29 @@ func FromYAML(file string) *Settings {
 	if err != nil {
 		fmt.Println(err)
 	}
-
-	fmt.Print(settings)
 	return settings
 }
 
 //BuildConnectionString takes the parameters and builds the db uri
-func BuildConnectionString(settings *MongoSettings) string {
+func BuildConnectionString(settings *Settings) string {
 	// mongodb://<dbuser>:<dbpassword>@ds263808.mlab.com:63808/zipcode
 
 	ConnectionString := fmt.Sprintf(
-		"%s://<%s>:<%s>@ds263808.mlab.com:%s/%s",
-		settings.Database,
-		settings.User,
-		settings.Password,
-		settings.Port,
-		settings.Collection,
+		"%s://%s:%s@ds263808.mlab.com:%s/%s",
+		settings.Mongo.Database,
+		settings.Mongo.User,
+		settings.Mongo.Password,
+		settings.Mongo.Port,
+		settings.Mongo.Collection,
 	)
-	fmt.Print(ConnectionString)
+	fmt.Print("\n" + ConnectionString + "\n")
 	return ConnectionString
 }
 
 //CreateConnectionString ...
 func CreateConnectionString() string {
 
-	settings := new(MongoSettings)
+	settings := FromYAML("config.yaml")
 	ConnectionString := BuildConnectionString(settings)
 
 	return ConnectionString

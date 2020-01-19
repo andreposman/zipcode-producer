@@ -1,6 +1,6 @@
 mongo:
-  database: mongo
+  database: mongodb
   user: andreposman
   password: andrep15
   port: 63808
-  collection: pickups
+  collection: zipcode
